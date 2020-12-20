@@ -48,6 +48,7 @@ var actionOnFile = function(filePath) {
                 calls_to_be_reduced: callsToBeReduced,
                 number_of_valid_calls: data.length,
                 gain: data.length / totalNumberOfCalls * 100,
+                waste: callsToBeReduced / totalNumberOfCalls * 100
             }, null, 4));
         }
     });
