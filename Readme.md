@@ -2,9 +2,7 @@
 
 - To download `19-12-2020` folder:
 ```
-gsutil cp -r \
-  gs://logs_sink_hawaya/appengine.googleapis.com/request_log/2020/12/19/ \
-  ./Data
+./download.sh
 ```
 
 this command is going to download logs for `19 Dec` day and put them in folder called `19`
@@ -13,4 +11,6 @@ this command is going to download logs for `19 Dec` day and put them in folder c
 ```
 node index.js 19
 ```
+
+where 19 is the name of the folder
     
