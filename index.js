@@ -7,7 +7,7 @@ var _ = require('lodash');
 var args = process.argv.slice(2);
 var folderName = args[0];
 
-dir.files(`./Data/${folderName}`, function(err, files) {
+dir.files(folderName ? `./Data/${folderName}` : './Data', function(err, files) {
   if (err) throw err;
   filesCount = files.length;
   //we have an array of files now, so now we'll iterate that array
