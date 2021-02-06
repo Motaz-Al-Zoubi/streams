@@ -61,21 +61,35 @@ var actionOnFile = function(filePath) {
                 buf = buf.slice(1); // discard it
                 continue; // so that the next iteration will start with data
             }
-            processLine(buf.slice(0,pos)); // hand off the line
+            processLogEntry(buf.slice(0,pos)); // hand off the line
             buf = buf.slice(pos+1); // and slice the processed data off the buffer
         }
     }
     
-    function processLine(line) { // here's where we do something with a line
+    function processLogEntry(line) { // here's where we do something with a line
         if (line[line.length-1] == '\r') line=line.substr(0,line.length-1); // discard CR (0x0D)
     
         if (line.length > 0) { // ignore empty lines
             var obj = JSON.parse(line); // parse the JSON
             var url = obj.protoPayload.resource;
-            if(result[url]) {
-                result[url] += 1;
+
+            var lines = obj.protoPayload.line;
+            var lang = lines.filter(line => line.logMessage.indexOf("accept-language") !== -1)
+                .map(line => _.last(line.logMessage.split(" ")))[0];
+
+            console.log("lang:", lang);
+
+            var latLon = lines.filter(line => line.logMessage.indexOf("X-AppEngine-CityLatLong") !== -1)
+            .map(line => _.last(line.logMessage.split(" ")))[0];
+
+            console.log('latLon', latLon);
+            var aggProperty = `${url}_${lang}_${latLon}`;
+
+            //var aggProperty = `${url}_${lang}`;
+            if(result[aggProperty]) {
+                result[aggProperty] += 1;
             } else {
-                result[url] = 1;
+                result[aggProperty] = 1;
             }
         }
     }
