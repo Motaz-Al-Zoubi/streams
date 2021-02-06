@@ -1,4 +1,5 @@
 # Tool to handle streams
+This docs assume that the content of `LogsAggregation` is copied to `~/index.js`
 
 - To download logs for `19-12-2020` just pass the day number to the download script:
 ```
