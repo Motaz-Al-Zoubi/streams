@@ -3,7 +3,7 @@ This docs assume that the content of `LogsAggregation` is copied to `~/index.js`
 
 - To download logs for `19-12-2020` just pass the day number to the download script:
 ```
-./download.sh 19
+./download.sh 2020/12/19/
 ```
 
 This command is going to download logs for `19 Dec` day and put them in folder called `19` within `./Data` folder.
@@ -20,3 +20,10 @@ where `19` is the name of the folder within `./Data` folder
 node index.js
 ```
     
+
+# Bash
+
+- Count all files that have `sql` in their names
+```
+ls -la | grep sql |wc -l
+```
