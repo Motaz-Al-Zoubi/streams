@@ -4,6 +4,7 @@ RUN printf '#!/bin/bash \n\
 set -e \n\
 if [ -d /home/node/deps/node_modules ]; then \n\
     echo "\nPreparing node_modules ..." \n\
+    echo $USER; \n\
     rm -Rf /home/node/app/node_modules; \n\
     mkdir -p /home/node/app/node_modules; \n\
     chown node /home/node/app/node_modules; \n\
