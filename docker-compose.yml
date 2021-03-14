@@ -15,3 +15,38 @@ services:
     user: 'node:node'
     volumes:
       - '.:/home/node/app:rw'
+    depends_on:
+      - db8
+      - db5
+  db5:
+    image: mysql:5.7
+    container_name: mysql5
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_ROOT_PASSWORD: ''
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    ports:
+      - '3307:3307'
+    expose:
+      # Opens port 3306 on the container
+      - '3307'
+      # Where our data will be persisted
+    volumes:
+      - '.:/usr/data:rw'
+  db8:
+    image: mysql:8.0
+    container_name: mysql8
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_ROOT_PASSWORD: ''
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    ports:
+      - '3306:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+      # Where our data will be persisted
+    volumes:
+      - '.:/usr/data:rw'
