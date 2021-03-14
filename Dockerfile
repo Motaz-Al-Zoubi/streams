@@ -6,8 +6,6 @@ if [ -d /home/node/deps/node_modules ]; then \n\
     echo "\nPreparing node_modules ..." \n\
     echo "current user is $USER"; \n\
     rm -Rf /home/node/app/node_modules; \n\
-    mkdir -p /home/node/app/node_modules; \n\
-    chown $USER /home/node/app/node_modules; \n\
     mv /home/node/deps/node_modules /home/node/app/node_modules \n\
     mv /home/node/deps/package-lock.json /home/node/app/package-lock.json \n\
 fi \n\
@@ -20,13 +18,15 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 USER node
 
+ARG NPM_TOKEN
+ENV NPM_TOKEN $NPM_TOKEN
 ENV NODE_ENV development
 ENV PATH /home/node/app/node_modules/.bin:$PATH
 
 RUN mkdir -p /home/node/deps /home/node/app
 
 WORKDIR /home/node/deps
-COPY ["package.json", "package-lock.json*", "./"]
+COPY [".npmrc", "package.json", "package-lock.json*", "./"]
 RUN npm install --quiet
 
 WORKDIR /home/node/app
