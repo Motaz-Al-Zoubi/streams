@@ -5,8 +5,8 @@ set -e \n\
 if [ -d /home/node/deps/node_modules ]; then \n\
     echo "\nPreparing node_modules ..." \n\
     rm -Rf /home/node/app/node_modules; \n\
-    RUN mkdir -p /home/node/app/node_modules; \n\
-    RUN chown node /home/node/app/node_modules; \n\
+    mkdir -p /home/node/app/node_modules; \n\
+    chown node /home/node/app/node_modules; \n\
     mv /home/node/deps/node_modules /home/node/app/node_modules \n\
     mv /home/node/deps/package-lock.json /home/node/app/package-lock.json \n\
 fi \n\
