@@ -5,17 +5,13 @@ var filesCount = 0;
 var currentFileCount = 0;
 var _ = require('lodash');
 var args = process.argv.slice(2);
-var folderName = "/home/motaz/Desktop/data";
+var folderName = args[0];
 
-var filename = '0.sql';
-
-dir.files(folderName, function(err, files) {
+dir.files(folderName ? `./Data/${folderName}` : './Data', function(err, files) {
   if (err) throw err;
   filesCount = files.length;
   //we have an array of files now, so now we'll iterate that array
   files.forEach(function(filePath) {
-    linesCount = 0;
-    console.log('filePath :>> ', filePath);
     actionOnFile(filePath);
   });
 });
@@ -31,7 +27,29 @@ var actionOnFile = function(filePath) {
     .on('end', function() {
         currentFileCount += 1;
         if(filesCount === currentFileCount) {
-            console.log('filesCount :>> ', filesCount);
+            const data = [];
+            let totalNumberOfCalls = 0;
+            let callsToBeReduced = 0;
+            _.forOwn(result, (freq, url) => {
+                freq = Number(freq);
+                totalNumberOfCalls += freq;
+                data.push({ freq, url });
+                if(freq > 1) {
+                    callsToBeReduced += freq - 1;
+                }
+            });
+            data.sort(function(a, b) {
+                return b.freq - a.freq;
+            });
+            console.log('data', JSON.stringify(data, null, 4));
+
+            console.log('stats', JSON.stringify({
+                total_number_of_calls: totalNumberOfCalls,
+                calls_to_be_reduced: callsToBeReduced,
+                number_of_valid_calls: data.length,
+                gain: data.length / totalNumberOfCalls * 100,
+                waste: callsToBeReduced / totalNumberOfCalls * 100
+            }, null, 4));
         }
     });
     
@@ -52,15 +70,27 @@ var actionOnFile = function(filePath) {
         if (line[line.length-1] == '\r') line=line.substr(0,line.length-1); // discard CR (0x0D)
     
         if (line.length > 0) { // ignore empty lines
-            linesCount++;
-            if (linesCount % 2000 === 0) {
-                filename = linesCount + '.sql';
-            } 
+            var obj = JSON.parse(line); // parse the JSON
+            var url = obj.protoPayload.resource;
 
-            fs.appendFile(filename, line + '\n', function (err) {
-              if (err) throw err;
-              console.log(filename + " Saved!");
-            });
+            var lines = obj.protoPayload.line;
+            var lang = lines.filter(line => line.logMessage.indexOf("accept-language") !== -1)
+                .map(line => _.last(line.logMessage.split(" ")))[0];
+
+            console.log("lang:", lang);
+
+            var latLon = lines.filter(line => line.logMessage.indexOf("X-AppEngine-CityLatLong") !== -1)
+            .map(line => _.last(line.logMessage.split(" ")))[0];
+
+            console.log('latLon', latLon);
+            var aggProperty = `${url}_${lang}_${latLon}`;
+
+            //var aggProperty = `${url}_${lang}`;
+            if(result[aggProperty]) {
+                result[aggProperty] += 1;
+            } else {
+                result[aggProperty] = 1;
+            }
         }
     }
 };

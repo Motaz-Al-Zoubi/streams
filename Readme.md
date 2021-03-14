@@ -27,3 +27,9 @@ node index.js
 ```
 ls -la | grep sql |wc -l
 ```
+
+# SSH into workload machine
+
+```
+gcloud beta compute ssh --zone "us-central1-a" "workload" --project "harmonica-dev"
+```
