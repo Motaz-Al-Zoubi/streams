@@ -18,8 +18,6 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 USER node
 
-ARG NPM_TOKEN
-ENV NPM_TOKEN $NPM_TOKEN
 ENV NODE_ENV development
 ENV PATH /home/node/app/node_modules/.bin:$PATH
 

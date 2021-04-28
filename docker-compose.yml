@@ -8,8 +8,6 @@ services:
       - ./.env
     build:
       context: .
-      args:
-        - NPM_TOKEN
     ports:
       - '31234:9229'
     user: 'node:node'
