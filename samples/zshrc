@@ -1,0 +1,35 @@
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/motaz/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/motaz/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/motaz/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/motaz/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
+
+alias gtwb='cd /Users/motaz/Library/Application Support/MySQL/Workbench'
+
+alias gtbf='cd /usr/local/bin'
+
+# export GOOGLE_APPLICATION_CREDENTIALS="/Users/motaz/code/secrets/dev.json"
+# export GOOGLE_APPLICATION_CREDENTIALS="/Users/motaz/code/secrets/testing.json"
+# export GOOGLE_APPLICATION_CREDENTIALS="/Users/motaz/code/secrets/staging.json"
+export GOOGLE_APPLICATION_CREDENTIALS="/Users/motaz/code/secrets/live.json"
+export HAWAYA_MAVEN_REPOSITORY_PASSWORD=HawayaSecret12345
+export AUTH_TOKEN="x"
+# harmonica-dev DB credentials
+export DATABASE_USER="Harmonica"
+export DATABASE_PASSWORD="1234567890"
+export JAVA_HOME="/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home"
+
+export PATH="$PATH:/usr/local/bin/code"
+export PATH="$PATH:/Users/motaz/Downloads/apache-maven-3.6.3/bin"
+export PATH="$PATH:/Applications/Sublime Text.app/Contents/SharedSupport/bin"
+
+# To deploy a servie to app engine named with "your OS USER NAME" in the harmonica-dev project
+alias deployMyDev="gcloud config configurations activate dev; export APP_ENGINE_SERVICE_NAME=$USER; mvn clean install package -P dev -Dmaven.test.skip=true; gcloud app deploy ./target/**/WEB-INF/appengine-web.xml;"
+
+# To deploy a servie to app engine named with "your OS USER NAME" in the harmonica-testing project
+alias deployMyTesting="gcloud config configurations activate testing; export APP_ENGINE_SERVICE_NAME=$USER; mvn clean install package -P testing -Dmaven.test.skip=true; gcloud app deploy ./target/**/WEB-INF/appengine-web.xml;"
+
+# To deploy a servie to app engine named with "your OS USER NAME" in the harmonica-staging project
+alias deployMyStaging="gcloud config configurations activate staging; export APP_ENGINE_SERVICE_NAME=$USER; mvn clean install package -P staging -Dmaven.test.skip=true; gcloud app deploy ./target/**/WEB-INF/appengine-web.xml;"
